@@ -1,0 +1,436 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>sigh.world — breathing stones</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+
+  :root {
+    --bg: #3E2723;
+    --bg-light: #4E342E;
+    --yellow: #F2D000;
+    --yellow-dim: #BFA200;
+    --neon: #DFFF00;
+    --cream: #FFF8E1;
+  }
+
+  html, body {
+    height: 100%;
+    font-family: 'Inter', -apple-system, sans-serif;
+    background: var(--bg);
+    color: var(--yellow);
+    overflow-x: hidden;
+  }
+
+  body {
+    background:
+      radial-gradient(ellipse at 50% 45%, rgba(78, 52, 46, 0.6) 0%, transparent 60%),
+      var(--bg);
+  }
+
+  .page {
+    height: 100vh;
+    height: 100dvh;
+    max-height: 100vh;
+    max-height: 100dvh;
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+    animation: fadeIn 1s ease-out;
+  }
+
+  /* ── breathe along — stretches full width ── */
+  .top-title {
+    font-family: 'Instrument Serif', Georgia, serif;
+    font-weight: 400;
+    font-size: 19.5vw;
+    line-height: 0.85;
+    letter-spacing: -0.02em;
+    color: var(--yellow);
+    text-align: center;
+    padding: 1.2rem 0 0;
+    white-space: nowrap;
+    width: 100%;
+    flex-shrink: 0;
+    animation: fadeUp 0.8s ease-out 0.1s both;
+  }
+
+  /* ── Middle: sigh.world label + globe ── */
+  .middle {
+    flex: 1;
+    min-height: 0;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 0;
+    padding: 0 2rem;
+    position: relative;
+  }
+
+  .globe-label {
+    font-family: 'Instrument Serif', Georgia, serif;
+    font-weight: 400;
+    font-style: italic;
+    font-size: clamp(1.3rem, 2.8vw, 2rem);
+    color: var(--yellow-dim);
+    letter-spacing: 0.02em;
+    text-align: center;
+    margin-bottom: 0.1rem;
+    animation: fadeUp 0.8s ease-out 0.3s both;
+  }
+
+  /* Globe canvas — sized by vh so it always fits, capped below title width */
+  .globe-container {
+    width: min(48vh, 38vw, 420px);
+    height: min(48vh, 38vw, 420px);
+    cursor: grab;
+    touch-action: none;
+    animation: fadeUp 1s ease-out 0.2s both;
+    flex-shrink: 1;
+  }
+  .globe-container:active { cursor: grabbing; }
+
+  .globe-container canvas {
+    width: 100% !important;
+    height: 100% !important;
+  }
+
+  /* ── Bottom bar ── */
+  .bottom-bar {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 1rem 2.5rem 1.5rem;
+    gap: 1.5rem;
+    flex-shrink: 0;
+    animation: fadeUp 0.8s ease-out 0.5s both;
+  }
+
+  .subtext {
+    font-family: 'JetBrains Mono', 'Courier New', monospace;
+    font-size: 0.75rem;
+    line-height: 1.7;
+    color: var(--yellow-dim);
+    letter-spacing: 0.01em;
+    max-width: 360px;
+    flex: 0 1 auto;
+  }
+
+  .btn-cta {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    padding: 1.1rem 3.5rem;
+    background: var(--yellow);
+    color: var(--bg);
+    font-family: 'JetBrains Mono', 'Courier New', monospace;
+    font-size: 1.1rem;
+    font-weight: 500;
+    letter-spacing: 0.02em;
+    text-decoration: none;
+    border: 2px solid var(--yellow);
+    border-radius: 60px;
+    cursor: pointer;
+    transition: all 0.3s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+    white-space: nowrap;
+    flex-shrink: 0;
+  }
+  .btn-cta:hover {
+    background: var(--bg);
+    color: var(--yellow);
+    border-color: var(--yellow);
+    transform: scale(1.03);
+  }
+
+  /* ── Animations ── */
+  @keyframes fadeIn {
+    from { opacity: 0; }
+    to { opacity: 1; }
+  }
+  @keyframes fadeUp {
+    from { opacity: 0; transform: translateY(16px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+
+  /* ── Mobile ── */
+  @media (max-width: 768px) {
+    .top-title {
+      font-size: 19.5vw;
+      padding: 1rem 0 0;
+    }
+
+    .globe-label {
+      font-size: 1.05rem;
+      margin-bottom: 0;
+    }
+
+    .globe-container {
+      width: min(50vh, 70vw, 320px);
+      height: min(50vh, 70vw, 320px);
+    }
+
+    .middle {
+      padding: 0 1rem;
+    }
+
+    .bottom-bar {
+      flex-direction: column;
+      text-align: center;
+      padding: 0.8rem 1.5rem 1.5rem;
+      gap: 0.8rem;
+    }
+
+    .subtext {
+      max-width: 300px;
+      font-size: 0.65rem;
+    }
+
+    .btn-cta {
+      width: 100%;
+      padding: 0.9rem 2rem;
+      font-size: 0.95rem;
+    }
+  }
+
+  /* ── Short viewports (landscape phones, small laptops) ── */
+  @media (max-height: 700px) {
+    .top-title {
+      font-size: min(19.5vw, 12vh);
+      padding: 0.5rem 0 0;
+    }
+
+    .globe-container {
+      width: min(40vh, 50vw, 360px);
+      height: min(40vh, 50vw, 360px);
+    }
+
+    .bottom-bar {
+      padding: 0.5rem 2rem 1rem;
+    }
+  }
+
+  /* ── Large screens ── */
+  @media (min-width: 1200px) {
+    .globe-container {
+      width: min(48vh, 440px);
+      height: min(48vh, 440px);
+    }
+
+    .bottom-bar {
+      padding: 1.5rem 4rem 2rem;
+    }
+
+    .btn-cta {
+      padding: 1.2rem 4.5rem;
+      font-size: 1.15rem;
+    }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .page, .top-title, .globe-label, .globe-container, .bottom-bar {
+      animation: none !important;
+    }
+  }
+</style>
+</head>
+<body>
+<div class="page">
+
+  <div class="top-title">breathe along</div>
+
+  <div class="middle">
+    <div class="globe-label">sigh.world</div>
+    <div class="globe-container" id="globe"></div>
+  </div>
+
+  <div class="bottom-bar">
+    <p class="subtext">science-backed haptic breathing technology.<br>quick calm. keep focused. better sleep.</p>
+    <a href="#" class="btn-cta">hold yours</a>
+  </div>
+
+</div>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+<script>
+(function() {
+  const container = document.getElementById('globe');
+  const width = container.clientWidth || 500;
+  const height = container.clientHeight || 500;
+
+  const scene = new THREE.Scene();
+  const camera = new THREE.PerspectiveCamera(34, 1, 0.1, 100);
+  camera.position.z = 5.6;
+
+  const renderer = new THREE.WebGLRenderer({ antialias: true, alpha: true });
+  renderer.setSize(width, height);
+  renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
+  renderer.setClearColor(0x000000, 0);
+  container.appendChild(renderer.domElement);
+
+  const globe = new THREE.Group();
+  scene.add(globe);
+
+  const neonYellow = new THREE.Color('#DFFF00');
+
+  function lineMat(opacity) {
+    return new THREE.LineBasicMaterial({
+      color: neonYellow,
+      transparent: true,
+      opacity: opacity,
+      linewidth: 1
+    });
+  }
+
+  // ── Noise ──
+  function seededRandom(x, y, z) {
+    const dot = x * 12.9898 + y * 78.233 + z * 37.719;
+    return ((Math.sin(dot) * 43758.5453) % 1 + 1) % 1;
+  }
+
+  function addNoise(point, seed, amount) {
+    const n = seededRandom(
+      Math.round(point.x * 80 + seed),
+      Math.round(point.y * 80),
+      Math.round(point.z * 80)
+    );
+    const displacement = (n - 0.5) * 2 * amount;
+    const len = Math.sqrt(point.x * point.x + point.y * point.y + point.z * point.z);
+    if (len === 0) return point;
+    return new THREE.Vector3(
+      point.x + (point.x / len) * displacement,
+      point.y + (point.y / len) * displacement,
+      point.z + (point.z / len) * displacement
+    );
+  }
+
+  const R = 1.085;
+  const segments = 128;
+  const noiseAmount = 0.025;
+
+  // ── Latitude rings ──
+  const latitudes = [
+    { y: 0,     opacity: 0.55 },
+    { y: 0.35,  opacity: 0.35 },
+    { y: -0.35, opacity: 0.35 },
+    { y: 0.65,  opacity: 0.25 },
+    { y: -0.65, opacity: 0.25 },
+    { y: 0.88,  opacity: 0.15 },
+    { y: -0.88, opacity: 0.15 },
+  ];
+
+  latitudes.forEach((lat, li) => {
+    const r = Math.sqrt(R * R - (lat.y * R) * (lat.y * R));
+    const pts = [];
+    for (let i = 0; i <= segments; i++) {
+      const angle = (i / segments) * Math.PI * 2;
+      const p = new THREE.Vector3(
+        Math.cos(angle) * r,
+        lat.y * R,
+        Math.sin(angle) * r
+      );
+      pts.push(addNoise(p, li * 17, noiseAmount));
+    }
+    const geo = new THREE.BufferGeometry().setFromPoints(pts);
+    globe.add(new THREE.Line(geo, lineMat(lat.opacity)));
+  });
+
+  // ── Longitude meridians ──
+  const meridianCount = 14;
+
+  for (let i = 0; i < meridianCount; i++) {
+    const angle = (i / meridianCount) * Math.PI;
+    const isPrimary = (i === 0 || i === meridianCount / 2);
+    const opacity = isPrimary ? 0.45 : 0.22;
+    const pts = [];
+    for (let j = 0; j <= segments; j++) {
+      const phi = (j / segments) * Math.PI * 2;
+      const p = new THREE.Vector3(
+        Math.cos(angle) * Math.sin(phi) * R,
+        Math.cos(phi) * R,
+        Math.sin(angle) * Math.sin(phi) * R
+      );
+      pts.push(addNoise(p, (i + meridianCount) * 23, noiseAmount));
+    }
+    const geo = new THREE.BufferGeometry().setFromPoints(pts);
+    globe.add(new THREE.Line(geo, lineMat(opacity)));
+  }
+
+  globe.rotation.x = 0.35;
+  globe.rotation.z = 0.08;
+
+  // ── Hover state ──
+  let isHovering = false;
+  let breathBlend = 0;
+
+  container.addEventListener('mouseenter', () => { isHovering = true; });
+  container.addEventListener('mouseleave', () => { isHovering = false; });
+  container.addEventListener('touchstart', () => { isHovering = true; }, { passive: true });
+  container.addEventListener('touchend', () => { isHovering = false; });
+
+  // ── Animate ──
+  const breathDuration = 4200;
+  const spinSpeed = 0.0021;
+  let startTime = performance.now();
+
+  function animate(now) {
+    requestAnimationFrame(animate);
+
+    const blendSpeed = 0.04;
+    if (isHovering) {
+      breathBlend = Math.min(1, breathBlend + blendSpeed);
+    } else {
+      breathBlend = Math.max(0, breathBlend - blendSpeed);
+    }
+
+    let breathScale = 1;
+    if (breathBlend > 0.001) {
+      const elapsed = (now - startTime) % breathDuration;
+      const t = elapsed / breathDuration;
+      if (t < 0.07) {
+        breathScale = 1;
+      } else if (t < 0.5) {
+        const p = (t - 0.07) / 0.43;
+        const eased = p < 0.5 ? 2 * p * p : 1 - Math.pow(-2 * p + 2, 2) / 2;
+        breathScale = 1 + 0.22 * eased;
+      } else if (t < 0.57) {
+        breathScale = 1.22;
+      } else {
+        const p = (t - 0.57) / 0.43;
+        const eased = p < 0.5 ? 2 * p * p : 1 - Math.pow(-2 * p + 2, 2) / 2;
+        breathScale = 1.22 - 0.22 * eased;
+      }
+    }
+
+    const finalScale = 1 + (breathScale - 1) * breathBlend;
+    globe.scale.setScalar(finalScale);
+
+    const spinAmount = spinSpeed * (1 - breathBlend);
+    globe.rotation.y += spinAmount;
+
+    renderer.render(scene, camera);
+  }
+
+  animate(performance.now());
+
+  function onResize() {
+    const w = container.clientWidth;
+    const h = container.clientHeight;
+    renderer.setSize(w, h);
+    camera.aspect = w / h;
+    camera.updateProjectionMatrix();
+  }
+  window.addEventListener('resize', onResize);
+
+  if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+    startTime = -999999;
+  }
+})();
+</script>
+</body>
+</html>
